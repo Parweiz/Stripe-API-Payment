@@ -36,14 +36,13 @@ class User
         }
         // See if there is already an existing username in the database
         else {
-            
+
             // Prepare the query. Notice that values inside "VALUES" are been set up as named parameters for security reason (SQL Injection)
             $this->db->query('SELECT uidUsers FROM users WHERE uidUsers=:uidUsers');
-        
+
             // Binding the actual values for our named parameters before execute
             $this->db->bind(':uidUsers', $data['uid']);
-
-            $this->db->getSingle();
+            $this->db->execute();
 
             // Checks how many rows or results we get from the db
             $resultCheck = $this->db->rowCount();
@@ -76,6 +75,44 @@ class User
 
     public function SignIn($data)
     {
-        
+        if (empty($data['uid']) || empty($data['password'])) {
+            header("Location: ../signin.php?error=emptyfields");
+            exit();
+        } else {
+            // Since we'd like to user to login with their username then that's how the sql statement will be implemented
+            $this->db->query('SELECT * FROM users WHERE uidUsers=:uidUsers');
+            $this->db->bind(':uidUsers', $data['uid']);
+
+            $result = $this->db->getSingle();
+            // Converting from stdClass to array - https://stackoverflow.com/questions/18576762/php-stdclass-to-array
+            $array = json_decode(json_encode($result), true);
+
+            if ($array) {
+                $pwdCheck = password_verify($data['password'], $array['pwdUsers']);
+                if ($pwdCheck === false) {
+                    header("Location: ../signin.php?error=wrongpwd");
+                    exit();
+                } elseif ($pwdCheck == true) {
+                    
+                    /* What we need to do in order to let the user to login is to start a session. The reason behind this 
+                    is that the way loginsystem works is that we create a global variable that has the info about the user, when
+                    he/she is signed in the website. In that matter we simply check inside the website check whether the global 
+                    variable is available or not. This is where "session" comes into play, because the type of variable we'd like
+                    to store globally is going to be a "session" variable. 
+                    */
+                    session_start();
+                    $_SESSION['user_id'] = $array['idUsers'];
+                    $_SESSION['username'] = $array['uidUsers'];
+
+                    header("Location: ../index.php?login=success");
+                } else {
+                    header("Location: ../signin.php?error=wrongpwd");
+                    exit();
+                }
+            } else {
+                header("Location: ../signin.php?error=nouser");
+                exit();
+            }
+        }
     }
 }

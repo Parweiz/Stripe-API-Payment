@@ -29,5 +29,11 @@ if (!isset($_POST['signup_submit'])) {
     $user = new User();
     $user->SignUp($userData);
 
-    header("Location: ../signin.php?signup=success");
+    if(true) {
+        header("Location: ../signin.php?signup=success");
+        exit();
+    } else {
+        header("Location: ../signup.php");
+        exit();
+    }
 }
