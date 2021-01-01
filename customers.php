@@ -1,11 +1,13 @@
 <?php
-  require_once('config/db.php');
-  require_once('lib/pdo_db.php');
-  require_once('models/Customer.php');
+$page = 'customers';
+require_once('config/db.php');
+require_once('lib/pdo_db.php');
+require_once('models/Customer.php');
+require_once('header.php');
 
-  // Instantiate Customer
-  $customer = new Customer();
-  $customers = $customer->getCustomers();
+// Instantiate Customer
+$customer = new Customer();
+$customers = $customer->getCustomers();
 ?>
 
 <!DOCTYPE html>
@@ -22,11 +24,11 @@
 
 <body>
     <div class="container mt-4">
-        <div class="btn-group" role="group">
+        <!-- <div class="btn-group" role="group">
             <a href="customers.php" class="btn btn-primary">Customers</a>
             <a href="transactions.php" class="btn btn-secondary">Transactions</a>
         </div>
-        <hr>
+        <hr> -->
         <h2>Customers</h2>
         <table class="table table-striped">
             <thead>
@@ -38,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($customers as $customer): ?>
+                <?php foreach ($customers as $customer) : ?>
                 <tr>
                     <td><?php echo $customer->customerID; ?></td>
                     <td><?php echo $customer->first_name; ?> <?php echo $customer->last_name; ?></td>
@@ -49,8 +51,13 @@
             </tbody>
         </table>
         <br>
-        <p><a href="index.php">Payment Page</a></p>
+        <p><a href="index.php">Back to Payment Page</a></p>
     </div>
 </body>
 
 </html>
+
+<?php
+
+require_once("footer.php")
+?>

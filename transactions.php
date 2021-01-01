@@ -1,10 +1,13 @@
 <?php
-  require_once('config/db.php');
-  require_once('lib/pdo_db.php');
-  require_once('models/Transaction.php');
+$page = 'transactions';
+require_once('config/db.php');
+require_once('lib/pdo_db.php');
+require_once('models/Transaction.php');
+require_once('header.php');
 
-  $transaction = new Transaction();
-  $transactions = $transaction->getTransactions();
+
+$transaction = new Transaction();
+$transactions = $transaction->getTransactions();
 ?>
 
 <!DOCTYPE html>
@@ -21,11 +24,12 @@
 
 <body>
     <div class="container mt-4">
-        <div class="btn-group" role="group">
+        <!-- <div class="btn-group" role="group">
             <a href="customers.php" class="btn btn-secondary">Customers</a>
             <a href="transactions.php" class="btn btn-primary">Transactions</a>
-        </div>
-        <hr>
+        </div> 
+
+        <hr> -->
         <h2>Transactions</h2>
         <table class="table table-striped">
             <thead>
@@ -38,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($transactions as $transaction): ?>
+                <?php foreach ($transactions as $transaction) : ?>
                 <tr>
                     <td><?php echo $transaction->transactionID; ?></td>
                     <td><?php echo $transaction->customerID; ?></td>
@@ -51,8 +55,14 @@
             </tbody>
         </table>
         <br>
-        <p><a href="index.php">Payment Page</a></p>
+        <p><a href="index.php">Back to Payment Page</a></p>
     </div>
 </body>
 
 </html>
+
+
+<?php
+
+require_once("footer.php")
+?>
