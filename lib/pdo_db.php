@@ -34,6 +34,11 @@ class Database {
 			exit('Something weird happened');
 		}
 	}
+
+	// Function to connect connection with after use in PDO
+	public function closeConnection() {
+		$this->dbhandler = null;
+	}
 	
 	// Prepare the statement with query
 	public function query($query) {

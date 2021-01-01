@@ -10,7 +10,7 @@ require "header.php"
             <span class="contact100-form-title">
                 Send Us A Message
             </span>
-            <form action="/includes/charge.inc.php" method=" POST">
+            <form action="includes/contactpage.inc.php" method="POST">
                 <div class="wrap-input100">
                     <input class="input100" type="text" name="name" placeholder="Full Name">
                     <span class="focus-input100"></span>
