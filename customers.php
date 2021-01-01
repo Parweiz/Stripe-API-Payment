@@ -5,9 +5,15 @@ require_once('lib/pdo_db.php');
 require_once('models/Customer.php');
 require_once('header.php');
 
-// Instantiate Customer
-$customer = new Customer();
-$customers = $customer->getCustomers();
+if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
+    header("Location: signin.php?error=loginfirst");
+    exit();
+} else {
+    // Instantiate Customer
+    $customer = new Customer();
+    $customers = $customer->getCustomers();
+}
+
 ?>
 
 <!DOCTYPE html>

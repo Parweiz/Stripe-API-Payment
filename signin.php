@@ -9,22 +9,8 @@ require_once('header.php')
         <img src="img/avatar.png" class="avatar">
         <h1>Login</h1>
 
-        <?php
-        if (isset($_GET['error'])) {
-            if ($_GET['error'] == "emptyfields") {
-                echo '<p">Fill in all fields!</p>';
-            } else if ($_GET['error'] == "wrongpwd") {
-                echo '<p>Wrong password</p>';
-            } else if ($_GET['error'] == "nouser") {
-                echo '<p>There is not a user with that username on the database!</p>';
-            }
-        } else if (isset($_GET['signup'])) {
-            if ($_GET['signup'] == "success") {
-                echo '<p>Signup successful!</p>';
-            }
-        }
 
-        ?>
+
 
         <form action="includes/signin.inc.php" method="post">
             <label for="uid"><b>Username</b></label>
@@ -43,7 +29,22 @@ require_once('header.php')
         }
         ?>
         <a href="reset_password.php">Forgot your password?</a><br>
-        <a href="signup.php">Don't have an account?</a>
+        <a href="signup.php">Don't have an account? </a>
+
+
+        <?php
+        if (isset($_GET['error'])) {
+            if ($_GET['error'] == "emptyfields") {
+                echo '<p class="red">Fill in all fields!</p>';
+            } else if ($_GET['error'] == "wrongpwd") {
+                echo '<p class="red">Wrong password</p>';
+            } else if ($_GET['error'] == "nouser") {
+                echo '<p class="red">There is not a user with that username on the database!</p>';
+            } else if ($_GET['error'] == "loginfirst") {
+                echo '<p class="loginfirst">You have to login first before you can see the list!</p>';
+            }
+        }
+        ?>
 
     </div>
 </main>

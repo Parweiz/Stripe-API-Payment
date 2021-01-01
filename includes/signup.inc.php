@@ -14,16 +14,18 @@ if (!isset($_POST['signup_submit'])) {
     $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 
     // Fetching all the datas that the user has passed on from the signup form
-    $username = $_POST['uid'];
-    $email = $_POST['mail'];
-    $password = $_POST['pwd'];
-    $passwordRepeat = $_POST['pwd_repeat'];
+    $fullName = $_POST['fullname'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $passwordRepeat = $_POST['password_repeat'];
 
     $userData = [
-        'uid' => $username,
-        'mail' => $email,
-        'pwd' => $password,
-        'pwdRepeat' => $passwordRepeat
+        'UserName' => $username,
+        'FullName' => $fullName,    
+        'Email' => $email,
+        'Password' => $password,
+        'RepeatPassword' => $passwordRepeat
     ];
 
     $user = new User();

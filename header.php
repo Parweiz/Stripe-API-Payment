@@ -27,7 +27,10 @@ session_start();
 
                 <li><a class="<?php if ($page == 'index') {
                                     echo 'active';
-                                } ?>" href="index.php">Payment</a></li>
+                                } ?>" href="index.php">Home</a></li>
+                <li><a class="<?php if ($page == 'stripe') {
+                                    echo 'active';
+                                } ?>" href="stripe.php">Payment</a></li>
                 <li><a class="<?php if ($page == 'customers') {
                                     echo 'active';
                                 } ?>" href="customers.php">A list of Customers</a></li>

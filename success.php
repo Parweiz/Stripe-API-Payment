@@ -1,13 +1,15 @@
 <?php
-  if(!empty($_GET['transactionId'] && !empty($_GET['product']))) {
-    // Filtering / Sanitize the GET array to make sure that IF value contains something harmful, then it will sanitize it as string
-    $GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);   
+require_once("header.php");
 
-    $transactionId = $GET['transactionId'];
-    $product = $GET['product'];
-  } else {
-    header('Location: index.php');
-  }
+if (!empty($_GET['transactionId'] && !empty($_GET['product']))) {
+  // Filtering / Sanitize the GET array to make sure that IF value contains something harmful, then it will sanitize it as string
+  $GET = filter_var_array($_GET, FILTER_SANITIZE_STRING);
+
+  $transactionId = $GET['transactionId'];
+  $product = $GET['product'];
+} else {
+  header('Location: index.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,3 +35,8 @@
 </body>
 
 </html>
+
+<?php
+
+require "footer.php"
+?>
