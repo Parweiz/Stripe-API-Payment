@@ -80,15 +80,19 @@ class User
             header("Location: ../signin.php?error=emptyfields");
             exit();
         } else {
-            // Since we'd like to user to login with their username then that's how the sql statement will be implemented
+            // Prepare the query - Trying to see if there's already an User object in DB
             $this->db->query('SELECT * FROM users WHERE UserName=:UserName');
             $this->db->bind(':UserName', $data['UserName']);
 
+            // If there's an User object in DB with that specific username then grab the object
             $result = $this->db->getSingle();
-            // Converting from stdClass to array - https://stackoverflow.com/questions/18576762/php-stdclass-to-array
+            // Converting from stdClass to array
             $array = json_decode(json_encode($result), true);
 
-            if ($array) {
+            if (!$array) {
+                header("Location: ../signin.php?error=nouser");
+                exit();
+            } else {
                 $pwdCheck = password_verify($data['Password'], $array['Pwd']);
                 if ($pwdCheck === false) {
                     header("Location: ../signin.php?error=wrongpwd");
@@ -112,9 +116,91 @@ class User
                     header("Location: ../signin.php?error=wrongpwd");
                     exit();
                 }
+            }
+        }
+    }
+
+    public function ResetRequest($data)
+    {
+        // Prepare the query - Delete any existing entries of a token inside db to make sure that there's no existing token from same user in db
+        $this->db->query('DELETE FROM pwdReset WHERE pwdResetEmail=:pwdResetEmail');
+        $this->db->bind(':pwdResetEmail', $data['email']);
+        $this->db->execute();
+
+        // Prepare new query
+        $this->db->query('INSERT INTO pwdReset (pwdResetEmail, pwdResetSelector, pwdResetToken, pwdResetExpireTime) 
+            VALUES (:pwdResetEmail,:pwdResetSelector,:pwdResetToken,:pwdResetExpireTime)');
+
+        $hashedToken = password_hash($data['token'], PASSWORD_DEFAULT);
+
+        $this->db->bind(':pwdResetEmail', $data['email']);
+        $this->db->bind(':pwdResetSelector', $data['selector']);
+        $this->db->bind(':pwdResetToken', $hashedToken);
+        $this->db->bind(':pwdResetExpireTime', $data['expireTime']);
+
+        $execute = $this->db->execute();
+
+        if ($execute) {
+            return true;
+        } else {
+            return false;
+        }
+
+        $this->db->closeConnection();
+    }
+
+    public function ResetPassword($data)
+    {
+        // Preparing the query - Select all data from pwdSelector and pwdResetExpireTime columns
+        $this->db->query('SELECT * FROM pwdReset WHERE pwdResetSelector=:pwdResetSelector AND pwdResetExpireTime >= :pwdResetExpireTime');
+
+        $this->db->bind(':pwdResetSelector', $data['selector']);
+        $this->db->bind(':pwdResetExpireTime', $data['currentDate']);
+
+        // If there's an object in DB containing value for its "selector" and "currentDate" columns then grab the object
+        $result = $this->db->getSingle();
+        $array = json_decode(json_encode($result), true);
+
+        if (!$array) {
+            // ERROR HANDLING MISSING
+        } else {
+            $tokenToBinary = hex2bin($data['validator']);
+
+            $tokenCheck = password_verify($tokenToBinary, $array['pwdResetToken']);
+
+            if ($tokenCheck === false) {
+                // ERROR HANDLING MISSING
+            } elseif ($tokenCheck === true) {
+                $tokenEmail = $array['pwdResetEmail'];
+
+                // Select all data from emailUsers column
+                $this->db->query('SELECT * FROM users WHERE Email=:Email');
+
+                $this->db->bind('Email', $tokenEmail);
+                $result = $this->db->getSingle();
+                $row = json_decode(json_encode($result), true);
+
+                if (!$array = $row) {
+                    // ERROR HANDLING
+                } else {
+                    // Modifies pwdUsers and emailUsers
+                    $this->db->query('UPDATE users SET Pwd=:Pwd WHERE Email=:Email');
+
+                    $hashedNewPwd = password_hash($data['password'], PASSWORD_DEFAULT);
+
+                    $this->db->bind(':Pwd', $hashedNewPwd);
+                    $this->db->bind(':Email', $tokenEmail);
+
+                    $this->db->execute();
+
+                    // Deletes any sort of token that belongs to a user with the same e-mail
+                    $this->db->query('DELETE FROM pwdReset WHERE pwdResetEmail=:pwdResetEmail');
+                    $this->db->bind(':pwdResetEmail', $tokenEmail);
+                    $this->db->execute();
+                    header("Location: ../signin.php?newpwd=passwordupdated");
+                }
             } else {
-                header("Location: ../signin.php?error=nouser");
-                exit();
+                // ERROR HANDLING
             }
         }
     }

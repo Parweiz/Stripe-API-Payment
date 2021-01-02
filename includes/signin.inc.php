@@ -13,7 +13,6 @@ if (!isset($_POST['login_submit'])) {
     // Filtering / Sanitize the POST Array to make sure that IF ppls put something harmful, then it will sanitize it as string    
     $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 
-    
     $mailuid = $_POST['uid'];
     $password = $_POST['password'];
 
