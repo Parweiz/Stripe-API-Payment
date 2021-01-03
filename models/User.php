@@ -33,11 +33,9 @@ class User
         } else if ($data['Password'] !== $data['RepeatPassword']) {
             header("Location: ../signup.php?error=passwordcheckfailed&username=" . $data['UserName'] . "&mail=" . $data['Email']);
             exit();
-        }
-        // See if there is already an existing username in the database
-        else {
+        } else {
 
-            // Prepare the query. Notice that values inside "VALUES" are been set up as named parameters for security reason (SQL Injection)
+            // Prepare the query. Trying to see if there is already an existing username in the database
             $this->db->query('SELECT UserName FROM users WHERE UserName=:UserName');
 
             // Binding the actual values for our named parameters before execute
@@ -120,30 +118,42 @@ class User
         }
     }
 
-    public function ResetRequest($data)
+    public function ResetPwdRequest($data)
     {
         // Prepare the query - Delete any existing entries of a token inside db to make sure that there's no existing token from same user in db
         $this->db->query('DELETE FROM pwdReset WHERE pwdResetEmail=:pwdResetEmail');
         $this->db->bind(':pwdResetEmail', $data['email']);
         $this->db->execute();
 
-        // Prepare new query
-        $this->db->query('INSERT INTO pwdReset (pwdResetEmail, pwdResetSelector, pwdResetToken, pwdResetExpireTime) 
+        $this->db->query('SELECT * FROM users WHERE Email=:Email');
+        $this->db->bind(':Email', $data['email']);
+
+        $result = $this->db->getSingle();
+        $array = json_decode(json_encode($result), true);
+
+        if ($array === false) {
+            header("Location: ../reset_password.php?error=emaildoesntexist");
+            exit();
+        } else {
+
+            // Prepare new query
+            $this->db->query('INSERT INTO pwdReset (pwdResetEmail, pwdResetSelector, pwdResetToken, pwdResetExpireTime) 
             VALUES (:pwdResetEmail,:pwdResetSelector,:pwdResetToken,:pwdResetExpireTime)');
 
-        $hashedToken = password_hash($data['token'], PASSWORD_DEFAULT);
+            $hashedToken = password_hash($data['token'], PASSWORD_DEFAULT);
 
-        $this->db->bind(':pwdResetEmail', $data['email']);
-        $this->db->bind(':pwdResetSelector', $data['selector']);
-        $this->db->bind(':pwdResetToken', $hashedToken);
-        $this->db->bind(':pwdResetExpireTime', $data['expireTime']);
+            $this->db->bind(':pwdResetEmail', $data['email']);
+            $this->db->bind(':pwdResetSelector', $data['selector']);
+            $this->db->bind(':pwdResetToken', $hashedToken);
+            $this->db->bind(':pwdResetExpireTime', $data['expireTime']);
 
-        $execute = $this->db->execute();
+            $execute = $this->db->execute();
 
-        if ($execute) {
-            return true;
-        } else {
-            return false;
+            if ($execute) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         $this->db->closeConnection();
@@ -162,14 +172,16 @@ class User
         $array = json_decode(json_encode($result), true);
 
         if (!$array) {
-            // ERROR HANDLING MISSING
+            header("Location: ../index.php?error=couldnotgetobject");
+            exit();
         } else {
             $tokenToBinary = hex2bin($data['validator']);
 
             $tokenCheck = password_verify($tokenToBinary, $array['pwdResetToken']);
 
             if ($tokenCheck === false) {
-                // ERROR HANDLING MISSING
+                header("Location: ../index.php?error=tokenverifyfailed");
+                exit();
             } elseif ($tokenCheck === true) {
                 $tokenEmail = $array['pwdResetEmail'];
 
@@ -181,7 +193,8 @@ class User
                 $row = json_decode(json_encode($result), true);
 
                 if (!$array = $row) {
-                    // ERROR HANDLING
+                    header("Location: ../index.php?error=usernamedoesnotexist");
+                    exit();
                 } else {
                     // Modifies pwdUsers and emailUsers
                     $this->db->query('UPDATE users SET Pwd=:Pwd WHERE Email=:Email');

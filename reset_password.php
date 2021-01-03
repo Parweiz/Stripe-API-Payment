@@ -17,11 +17,15 @@ require "header.php"
 
         <?php
 
-        if (isset($_GET["reset"])) {
-            if ($_GET["reset"] == "success") {
+        if (isset($_GET["mailsent"])) {
+            if ($_GET["mailsent"] == "success") {
                 echo '<p class="green">Check your email!</p>';
-            } else if ($_GET['reset'] == "failed") {
-                echo '<p class="red">Something went wrong...</p>';
+            } else if ($_GET['mailsent'] == "failed") {
+                echo '<p class="mailnotsent">The request could not be sent. Please try again in a few minutes</p>';
+            }
+        } elseif (isset($_GET["error"])) {
+            if ($_GET["error"] == "emaildoesntexist") {
+                echo '<p class="emailnotexist">The email you provided does not exist in DB! Please provide the right email</p>';
             }
         }
 

@@ -44,25 +44,40 @@ if (!isset($_POST['reset_request_submit'])) {
     ];
 
     $user = new User();
-    $user->ResetRequest($userData);
+    $user->ResetPwdRequest($userData);
 
-    if(true) {
+    if (true) {
         $toWhomEmail = $email;
-        $subject = "Reset your password";
-        $message = 'We received a password reset request. The link to reset your password is below. If you did not
-    make this request, you can ignore this mail. </b></b> Here is your password reset link: </b>';
-        $message .= '<a href=' . $url . '">' . $url . '</a></p> P.S.: You have to copy the link and paste it into your browser';
+        $subject = "Reset your password request from " . $email;
 
+        /* $message = 'We received a password reset request. The link to reset your password is below. If you did not
+    make this request, you can ignore this mail. </b></b> Here is your password reset link: </b>';
+        $message .= '<a href=' . $url . '">' . $url . '</a></p> <br>' . 'P.S.: You have to copy the link and paste it into your browser';
+*//* 
         $headers = "From: <thefewsue@gmail.com>\r\n";
         $headers .= "Reply-To: thefewsue@gmail.com\r\n";
-        $headers .= "Content-type: text/html\r\n";
+        $headers .= "Content-type: text/html\r\n"; */
 
-        $mail = mail($toWhomEmail, $subject, $message, $headers);
+        $mail =
+            mail($toWhomEmail, $subject, $message, $headers);
+
+        $body = "<h2>Reset your password request</h2>
+                <p>We have received a password reset request based on this email.
+                If you did not make the request, then you can ignore this ignore
+                Otherwise, here is your password reset link</p>
+                <a href=" . $url . ">" . $url .  "</a>
+        ";
+
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
+        $headers .= "From: " . $email . "\r\n";
+
+        $mail = mail($toWhomEmail, $subject, $body, $headers);
 
         if ($mail) {
-            header("Location: ../reset_password.php?reset=success");
+            header("Location: ../reset_password.php?mailsent=success");
         } else {
-            header("Location: ../reset_password.php?reset=failed");
+            header("Location: ../reset_password.php?mailsent=failed");
         }
     }
 }

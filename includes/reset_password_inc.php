@@ -21,7 +21,7 @@ if (!isset($_POST['reset_password_submit'])) {
     $userData = [
         'selector' => $selector,
         'validator' => $validator,
-        'password' => $urlpassword,
+        'password' => $password,
         'passwordRepeat' => $passwordRepeat,
         'currentDate' => $currentDate
     ];

@@ -3,14 +3,10 @@ $page = 'login';
 require_once('header.php')
 ?>
 
-
 <main>
     <div class="loginbox">
         <img src="img/avatar.png" class="avatar">
         <h1>Login</h1>
-
-
-
 
         <form action="includes/signin.inc.php" method="post">
             <label for="uid"><b>Username</b></label>
@@ -21,16 +17,9 @@ require_once('header.php')
 
             <input type="submit" name="login_submit" value="Login">
         </form>
-        <?php
-        if (isset($_GET['newpwd'])) {
-            if ($_GET['newpwd'] == "passwordupdated") {
-                echo "<p>Your password has been reset! </p>";
-            }
-        }
-        ?>
+
         <a href="reset_password.php">Forgot your password?</a><br>
         <a href="signup.php">Don't have an account? </a>
-
 
         <?php
         if (isset($_GET['error'])) {
@@ -42,6 +31,14 @@ require_once('header.php')
                 echo '<p class="red">There is not a user with that username on the database!</p>';
             } else if ($_GET['error'] == "loginfirst") {
                 echo '<p class="loginfirst">You have to login first before you can see the list!</p>';
+            }
+        } else if (isset($_GET['signup'])) {
+            if ($_GET['signup'] == "success") {
+                echo '<p class="green">Signup successful! </p>';
+            }
+        } else if (isset($_GET['newpwd'])) {
+            if ($_GET['newpwd'] == "passwordupdated") {
+                echo '<p class="pwdresetsuccesfull">Your password has been reset! </p>';
             }
         }
         ?>

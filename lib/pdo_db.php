@@ -31,7 +31,7 @@ class Database
 		}
 		// Catch any errors
 		catch (PDOException $e) {
-			print "Error: " . $e->getMessage() . "! <br/>";
+			print "Connection Error: " . $e->getMessage() . "! <br/>";
 		}
 	}
 

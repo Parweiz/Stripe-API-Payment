@@ -4,7 +4,7 @@ $logo-green: #3cba54;
 body {
     margin: 0;
     padding: 0;
-    background: url(img/pic1.jpg);
+    background: url(../img/coffee.jpg);
     background-size: 100%;
     list-style: none;
     text-decoration: none;
@@ -27,20 +27,30 @@ h1 {
     left: calc(50% - 50px);
 }
 
-
 .red {
     color: $logo-red;
     font-size: x-large;
 }
 
-.loginfirst {
-    color: #db3236;
+.resetpwd, .emptyemail {
+    color: $logo-red;
+    font-size: x-large;
+    text-align: center;
+}
+
+.loginfirst, .emailnotexist, .mailnotsent {
+    color: $logo-red;
     font-size: large;
 }
 
 .green {
     color: $logo-green;
     font-size: x-large;
+}
+
+.pwdresetsuccesfull {
+    color: $logo-green;
+    font-size: large;
 }
 
 

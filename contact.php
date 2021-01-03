@@ -7,6 +7,7 @@ require "header.php"
 
     <div class="container-contact100">
         <div class="wrap-contact100">
+
             <span class="contact100-form-title">
                 Send Us A Message
             </span>
@@ -40,6 +41,23 @@ require "header.php"
                     </button>
                 </div>
             </form>
+
+            <?php
+
+            if (isset($_GET["mailsent"])) {
+                if ($_GET["mailsent"] == "success") {
+                    echo '<p class="green"><br /><br /> Thank you for contacting us! You will get back to you soon</p>';
+                } else if ($_GET['mailsent'] == "failed") {
+                    echo '<p class="red"><br /><br /> Sorry, your email was not sent. Please try again in a few minutes</p>';
+                }
+            } elseif (isset($_GET['error'])) {
+                if ($_GET['error'] == "emptyfields") {
+                    echo '<p class="red" style="text-align:center"><br /><br /> Fill in all fields!</p>';
+                } else if ($_GET['error'] == "invalidmail") {
+                    echo '<p class="red" style="text-align:center"><br /><br /> Invalid email!</p>';
+                }
+            }
+            ?>
         </div>
     </div>
 
