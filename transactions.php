@@ -5,13 +5,8 @@ require_once('lib/pdo_db.php');
 require_once('models/Transaction.php');
 require_once('header.php');
 
-if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == false) {
-    header("Location: signin.php?error=loginfirst");
-    exit();
-} else {
-    $transaction = new Transaction();
-    $transactions = $transaction->getTransactions();
-}
+$transaction = new Transaction();
+$transactions = $transaction->getTransactions();
 
 
 ?>

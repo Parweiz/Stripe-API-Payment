@@ -28,6 +28,9 @@ session_start();
                 <li><a class="<?php if ($page == 'index') {
                                     echo 'active';
                                 } ?>" href="index.php">Home</a></li>
+                <li><a class="<?php if ($page == 'product') {
+                                    echo 'active';
+                                } ?>" href="product.php">Products</a></li>
                 <li><a class="<?php if ($page == 'stripe') {
                                     echo 'active';
                                 } ?>" href="stripe.php">Payment</a></li>
@@ -36,40 +39,17 @@ session_start();
                                 } ?>" href="customers.php">A list of Customers</a></li>
                 <li><a class="<?php if ($page == 'transactions') {
                                     echo 'active';
-                                } ?>" href="transactions.php">A list of Transaction</a></li>
-                <li><a class="<?php if ($page == 'contact') {
-                                    echo 'active';
-                                } ?>" href="contact.php">Contact</a></li>
+                                } ?>" href="transactions.php">A list of Transactions</a></li>
 
-                <?php
 
-                if (isset($_SESSION['user_id'])) {
-                    echo '<form action="includes/logout.inc.php" method="post">
-                    <input type="submit" style="float:right; width:200px; height: 50px" name="logout_submit" value="Logout">
-                </form>';
-                } else {
-                ?>
 
-                <li style="float:right"><a class="<?php if ($page == 'register') {
-                                                            echo 'active';
-                                                        } ?>" href="signup.php">Sign Up</a> </li>
 
-                <li style="float:right"><a class="<?php if ($page == 'login') {
-                                                            echo 'active';
-                                                        } ?>" href="signin.php">Login</a> </li>
-
-                <?php
-                }
-
-                ?>
             </ul>
-            <div>
 
-
-            </div>
         </nav>
     </header>
 
     <script src="https://js.stripe.com/v3/"></script>
+
 
 </body>
