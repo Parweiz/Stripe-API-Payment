@@ -1,13 +1,22 @@
 <?php
 $page = 'transactions';
-require_once('config/db.php');
+require_once('config/dbConfig.php');
+require_once('vendor/autoload.php');
 require_once('lib/pdo_db.php');
 require_once('models/Transaction.php');
 require_once('header.php');
 
-$transaction = new Transaction();
-$transactions = $transaction->getTransactions();
-
+if (!isset($_SESSION['loggedin'])) {
+    header("Location: login.php?error=loginfirst");
+    exit();
+} else {
+    $stripe = new \Stripe\StripeClient(
+        'sk_test_51HmPsTArNppioXnxL4J48Xsy3Iu0au1UcViYsUVkcKmkvXRzB4ap0xuzJ1ziFNl8OFDvGnjiY3jgXteCQ2e8XZeK00JbELNUB1'
+    );
+    $transactions = $stripe->charges->all([
+        'limit' => 20,
+    ]);
+}
 
 ?>
 
@@ -43,14 +52,14 @@ $transactions = $transaction->getTransactions();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($transactions as $transaction) : ?>
+                <?php foreach ($transactions as $transaction) : $regDate = $transaction->created; ?>
                 <tr>
-                    <td><?php echo $transaction->transactionID; ?></td>
+                    <td><?php echo $transaction->id; ?></td>
                     <td><?php echo $transaction->customerID; ?></td>
                     <td><?php echo $transaction->product; ?></td>
                     <td><?php echo sprintf('%.2f', $transaction->amount / 100); ?>
                         <?php echo strtoupper($transaction->currency); ?></td>
-                    <td><?php echo $transaction->created_at; ?></td>
+                    <td><?php echo date('r', $regDate) ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>

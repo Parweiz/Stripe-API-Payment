@@ -1,6 +1,8 @@
 <?php
 $page = 'product';
-require_once('header.php')
+// require_once('config/stripeConfig.php');
+require_once('header.php');
+
 ?>
 
 <main>
@@ -11,7 +13,7 @@ require_once('header.php')
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2 class="price"><span class="currency">€</span>27</h2>
+                        <h2 class="price"><span class="currency">€</span>30</h2>
                     </div>
                     <div class="card-body">
                         <h1 class="text-center">Product 1</h1>
@@ -22,10 +24,10 @@ require_once('header.php')
                         </ul>
                     </div>
                     <div class="card-footer text-center">
-                        <form action="paymentProcess.php?pid=1" method="POST">
+                        <form action="includes/payment.inc.php?productid=1" method="POST">
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="pk_test_InwOqy624uXwfN2dgqlCR2gI" data-amount="2700"
-                                data-name="CodingPassiveIncome" data-description="Widget"
+                                data-key="pk_test_51HmPsTArNppioXnx7eMPo9WrVdbmEVlLzT542PvPOdqTNkGr0jtMQSRaB5JaUhO0mvQ7kbs5kDib8d1STOutR9hY00JyBGkPlw"
+                                data-amount="3000" data-name="XXXXXXXXXX" data-description="Rnd Description"
                                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                 data-locale="auto" data-currency="eur">
                             </script>
@@ -36,10 +38,10 @@ require_once('header.php')
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2 class="price"><span class="currency">€</span>67</h2>
+                        <h2 class="price"><span class="currency">€</span>60</h2>
                     </div>
                     <div class="card-body">
-                        <h1 class="text-center">Product 1</h1>
+                        <h1 class="text-center">Product 2</h1>
                         <ul class="list-group">
                             <li class="list-group-item">Feature 1</li>
                             <li class="list-group-item">Feature 2</li>
@@ -47,10 +49,10 @@ require_once('header.php')
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <form action="paymentProcess.php?pid=2" method="POST">
+                        <form action="includes/payment.inc.php?productid=2" method="POST">
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="pk_test_InwOqy624uXwfN2dgqlCR2gI" data-amount="6700"
-                                data-name="CodingPassiveIncome" data-description="Widget"
+                                data-key="pk_test_51HmPsTArNppioXnx7eMPo9WrVdbmEVlLzT542PvPOdqTNkGr0jtMQSRaB5JaUhO0mvQ7kbs5kDib8d1STOutR9hY00JyBGkPlw"
+                                data-amount="6000" data-name="XXXXXXXXXX" data-description="Rnd Description"
                                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                 data-locale="auto" data-currency="eur">
                             </script>
@@ -61,10 +63,10 @@ require_once('header.php')
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2 class="price"><span class="currency">€</span>97</h2>
+                        <h2 class="price"><span class="currency">€</span>90</h2>
                     </div>
                     <div class="card-body">
-                        <h1 class="text-center">Product 1</h1>
+                        <h1 class="text-center">Product 3</h1>
                         <ul class="list-group">
                             <li class="list-group-item">Feature 1</li>
                             <li class="list-group-item">Feature 2</li>
@@ -72,10 +74,10 @@ require_once('header.php')
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <form action="paymentProcess.php?pid=3" method="POST">
+                        <form action="includes/payment.inc.php?productid=3" method="POST">
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="pk_test_InwOqy624uXwfN2dgqlCR2gI" data-amount="9700"
-                                data-name="CodingPassiveIncome" data-description="Widget"
+                                data-key="pk_test_51HmPsTArNppioXnx7eMPo9WrVdbmEVlLzT542PvPOdqTNkGr0jtMQSRaB5JaUhO0mvQ7kbs5kDib8d1STOutR9hY00JyBGkPlw"
+                                data-amount="9000" data-name="XXXXXXXXXX" data-description="Rnd Description"
                                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                 data-locale="auto" data-currency="eur">
                             </script>

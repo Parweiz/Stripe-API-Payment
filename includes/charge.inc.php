@@ -1,6 +1,7 @@
 <?php
 require_once('../vendor/autoload.php');
-require_once('../config/db.php');
+require_once('../config/dbConfig.php');
+require_once('../config/stripeConfig.php');
 require_once('../lib/pdo_db.php');
 require_once('../models/Customer.php');
 require_once('../models/Transaction.php');
@@ -59,7 +60,7 @@ $transactionData = [
 
 // Instantiate Transaction
 $transaction = new Transaction();
-$transaction->addTransaction($transactionData); 
+$transaction->addTransaction($transactionData);
 
 // Redirect to success
 header('Location: ../success.php?transactionId=' . $charge->id . '&product=' . $charge->description);

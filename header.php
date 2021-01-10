@@ -17,6 +17,8 @@ session_start();
     <link rel="icon" type="image/png" href="img/fcb.png" />
 
     <link rel="stylesheet" type="text/css" href="dist/css/style.css" />
+
+
 </head>
 
 <body>
@@ -42,6 +44,25 @@ session_start();
                                 } ?>" href="transactions.php">A list of Transactions</a></li>
 
 
+                <?php
+
+                if (isset($_SESSION['loggedin'])) {
+                    echo '<form action="includes/logout.inc.php" method="post">
+                    <input type="submit" style="float:right; width:200px; height: 50px" name="logout_submit" value="Logout">
+                </form>';
+                } else {
+                ?>
+
+                <li style="float:right"><a class="<?php if ($page == 'login') {
+                                                            echo 'active';
+                                                        } ?>" href="login.php">Login</a> </li>
+
+                <?php
+                }
+
+                ?>
+
+
 
 
             </ul>
@@ -49,7 +70,7 @@ session_start();
         </nav>
     </header>
 
-    <script src="https://js.stripe.com/v3/"></script>
 
+    <script src="https://js.stripe.com/v3/"></script>
 
 </body>

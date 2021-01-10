@@ -1,12 +1,20 @@
 <?php
 $page = 'customers';
-require_once('config/db.php');
+require_once('config/dbConfig.php');
+require_once('vendor/autoload.php');
 require_once('lib/pdo_db.php');
 require_once('models/Customer.php');
 require_once('header.php');
 
-$customer = new Customer();
-$customers = $customer->getCustomers();
+if (!isset($_SESSION['loggedin'])) {
+    header("Location: login.php?error=loginfirst");
+    exit();
+} else {
+    $stripe = new \Stripe\StripeClient(
+        'sk_test_51HmPsTArNppioXnxL4J48Xsy3Iu0au1UcViYsUVkcKmkvXRzB4ap0xuzJ1ziFNl8OFDvGnjiY3jgXteCQ2e8XZeK00JbELNUB1'
+    );
+    $customers = $stripe->customers->all(['limit' => 20]);
+}
 
 ?>
 
@@ -40,12 +48,14 @@ $customers = $customer->getCustomers();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($customers as $customer) : ?>
+
+                <?php foreach ($customers as $customer) : $regDate = $customer->created; ?>
+
                 <tr>
-                    <td><?php echo $customer->customerID; ?></td>
-                    <td><?php echo $customer->first_name; ?> <?php echo $customer->last_name; ?></td>
+                    <td><?php echo $customer->id; ?></td>
+                    <td><?php echo !empty($customer->name) ? $customer->name : "-" ?> </td>
                     <td><?php echo $customer->email; ?></td>
-                    <td><?php echo $customer->created_at; ?></td>
+                    <td><?php echo date('r', $regDate) ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
